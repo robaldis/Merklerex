@@ -2,6 +2,30 @@
 #include <string>
 #include <vector>
 
+enum class OderBookType{bid, ask};
+
+/** Data structure to represent each row in the colum of data */
+class OderBookEntry
+{
+    public:
+        
+        double price;
+        double amount;
+        std::string timestamp;
+        std::string product;
+        OderBookType oderType;
+
+        OderBookEntry(double price, double amount, std::string timestamp, std::string product, OderBookType oderType)
+        {
+            this->price = price;
+            this->amount = amount;
+            this->timestamp = timestamp;
+            this->product = product;
+            this->oderType = oderType;
+        }
+};
+
+
 /** print out the options the user can choose from */
 void printMenu () 
 {
@@ -100,29 +124,11 @@ void processUserOption(int userOption)
 
 int main()
 {
-    // How everything will be represented in the dataset
-    enum class OderBookType{bid, ask};
+
+    OderBookEntry order1{0.0000008,49152265.030762,"2020/03/17 17:02:00.124758","DOGE/BTC",OderBookType::ask};
 
 
-    // double price = 0.0000008;
-    // double amount = 49152265.030762;
-    // std::string timestamp{"2020/03/17 17:02:00.124758"};
-    // std::string product{"DOGE/BTC"};
-    // OderBookType oderType = OderBookType::ask;
-
-    std::vector<double> prices;
-    std::vector<double> amounts;
-    std::vector<std::string> timestamps;
-    std::vector<std::string> products;
-    std::vector<OderBookType> orderTypes;
-
-
-    prices.push_back(0.0000008);
-    amounts.push_back(49152265.030762);
-    timestamps.push_back("2020/03/17 17:02:00.124758");
-    products.push_back("DOGE/BTC");
-    orderTypes.push_back(OderBookType::ask);
-
+    std::cout << "The price is " << order1.price << std::endl;
 
     while (true) 
     {
