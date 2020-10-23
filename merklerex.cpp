@@ -5,7 +5,7 @@
 enum class OderBookType{bid, ask};
 
 /** Data structure to represent each row in the colum of data */
-class OderBookEntry
+class OrderBookEntry
 {
     public:
         
@@ -15,13 +15,10 @@ class OderBookEntry
         std::string product;
         OderBookType oderType;
 
-        OderBookEntry(double price, double amount, std::string timestamp, std::string product, OderBookType oderType)
+        OrderBookEntry(double price, double amount, std::string timestamp, std::string product, OderBookType oderType)
+        : price(price), amount(amount), timestamp(timestamp), product(product), oderType(oderType) // This is the better way to initialise parameters
         {
-            this->price = price;
-            this->amount = amount;
-            this->timestamp = timestamp;
-            this->product = product;
-            this->oderType = oderType;
+
         }
 };
 
@@ -125,10 +122,14 @@ void processUserOption(int userOption)
 int main()
 {
 
-    OderBookEntry order1{0.0000008,49152265.030762,"2020/03/17 17:02:00.124758","DOGE/BTC",OderBookType::ask};
+    // OrderBookEntry order1{0.0000008,49152265.030762,"2020/03/17 17:02:00.124758","DOGE/BTC",OderBookType::ask};
 
 
-    std::cout << "The price is " << order1.price << std::endl;
+    std::vector<OrderBookEntry> orderBook;
+
+    orderBook.push_back(OrderBookEntry{0.0000008,49152265.030762,"2020/03/17 17:02:00.124758","DOGE/BTC",OderBookType::ask});
+
+    std::cout << "The price is " << orderBook[0].price << std::endl;
 
     while (true) 
     {
