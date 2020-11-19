@@ -21,6 +21,7 @@ std::vector<std::string> OrderBook::getKnownProducts() {
     return  products;
 }
 
+
 std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string product, std::string timestamp) {
     std::vector<OrderBookEntry> orders_sub;
     for (OrderBookEntry& e : orders) {
@@ -34,7 +35,6 @@ std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string
 }
 
 
-
 double OrderBook::getHighPrice(std::vector<OrderBookEntry>& orders) {
     double max = orders[0].price;
     for (OrderBookEntry& e : orders) {
@@ -42,6 +42,8 @@ double OrderBook::getHighPrice(std::vector<OrderBookEntry>& orders) {
     }
     return max;
 }
+
+
 double OrderBook::getLowestPrice(std::vector<OrderBookEntry>& orders) {
     double min = orders[0].price;
     for (OrderBookEntry& e : orders) {
@@ -51,10 +53,10 @@ double OrderBook::getLowestPrice(std::vector<OrderBookEntry>& orders) {
 }
 
 
-
 std::string OrderBook::getEarliestTime() {
     return orders[0].timestamp;
 }
+
 
 std::string OrderBook::getNextTime(std::string timestamp) {
     std::string next_timestamp = "";

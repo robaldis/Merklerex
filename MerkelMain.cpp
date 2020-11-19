@@ -46,10 +46,10 @@ void MerkelMain::printExchange() {
     for(std::string const& p : orderBook.getKnownProducts()) {
         std::cout << "Product: " << p << std::endl;
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
-                p,
-                "2020/03/17 17:01:24.884492");
+                p, currentTime);
         std::cout << "Asks seen: " << entries.size() << std::endl;
-        std::cout << "Max ask: " << OrderBook::getLowestPrice(entries) << std::endl;
+        std::cout << "Max ask: " << OrderBook::getHighPrice(entries) << std::endl;
+        std::cout << "Min ask: " << OrderBook::getLowestPrice(entries) << std::endl;
     }
 }
 
@@ -63,7 +63,7 @@ void MerkelMain::printWallet() {
     std::cout << "youre poor" << std::endl;
 }
 void MerkelMain::goToNextTimeFrame() {
-    std::cout << "Going to next time frame in the exchange." << std::endl;
+    std::cout << "Going to next time frame in the exchange" << std::endl;
     currentTime = orderBook.getNextTime(currentTime);
 }
 
