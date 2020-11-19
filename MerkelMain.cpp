@@ -9,17 +9,13 @@ MerkelMain::MerkelMain()
 }
 
 void MerkelMain::init() {
-    LoadOrderBook();
-                int input;
+    int input;
+    currentTime = orderBook.getEarliestTime();
     while (true) {
                 printMenu();
         input = getUserOption();
         processUserOption(input);
     }
-}
-
-void MerkelMain::LoadOrderBook() {
-    orderBook = CSVReader::readCSV("data/book_data.csv");
 }
 
 /** print MerkelMain::out the options the user can choose from */
@@ -40,25 +36,23 @@ void MerkelMain::printMenu() {
     // 6 continue
     std::cout << "6: continue" << std::endl;
     std::cout << "==============" << std::endl;
+    std::cout << "Current time: " << currentTime << std::endl;
 }
 
 void MerkelMain::printHelp() {
     std::cout << "Its simple you don't need help" << std::endl;
 }
 void MerkelMain::printExchange() {
-    std::cout << "OrderBook contains: " << orderBook.size() << " entries" << std::endl;
-    unsigned int asks = 0;
-    unsigned int bids = 0;
-    for (OrderBookEntry& e : orderBook) {
-        if (e.orderType == OrderBookType::ask) {
-            asks ++;
-        }
-        if (e.orderType == OrderBookType::bid) {
-            bids ++;
-        }
+    for(std::string const& p : orderBook.getKnownProducts()) {
+        std::cout << "Product: " << p << std::endl;
+        std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
+                p,
+                "2020/03/17 17:01:24.884492");
+        std::cout << "Asks seen: " << entries.size() << std::endl;
+        std::cout << "Max ask: " << OrderBook::getLowestPrice(entries) << std::endl;
     }
-    std::cout << "Asks: " << asks << ", Bids: " << bids << std::endl;
 }
+
 void MerkelMain::enterOffer() {
     std::cout << "You chose enter offer" << std::endl;
 }
@@ -69,7 +63,8 @@ void MerkelMain::printWallet() {
     std::cout << "youre poor" << std::endl;
 }
 void MerkelMain::goToNextTimeFrame() {
-    std::cout << "Going to next time frame in the exchange" << std::endl;
+    std::cout << "Going to next time frame in the exchange." << std::endl;
+    currentTime = orderBook.getNextTime(currentTime);
 }
 
 /** Use cin to get the user input to the menu */

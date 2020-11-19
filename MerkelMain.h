@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "OrderBookEntry.h"
+#include "OrderBook.h"
 
 class MerkelMain {
     public:
@@ -20,7 +21,7 @@ class MerkelMain {
         int getUserOption() ;
         /** take in what number the use has inputed and decide what needs to be run from that */
         void processUserOption(int userOption); 
-        void LoadOrderBook();
         
-        std::vector<OrderBookEntry> orderBook;
+        OrderBook orderBook{"data/book_data.csv"};
+        std::string currentTime;
 };
