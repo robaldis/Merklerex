@@ -2,34 +2,28 @@
 #include <vector>
 #include "MerkelMain.h"
 #include "OrderBookEntry.h"
+#include "CSVReader.h"
 
 MerkelMain::MerkelMain()
 {
 }
 
-void MerkelMain::init()
-{
+void MerkelMain::init() {
     LoadOrderBook();
-    int input;
-    while (true)
-    {
-        printMenu();
+                int input;
+    while (true) {
+                printMenu();
         input = getUserOption();
         processUserOption(input);
     }
 }
 
-void MerkelMain::LoadOrderBook()
-{
-
-    orderBook.push_back(OrderBookEntry{0.0000008, 49152265.030762, "2020/03/17 17:02:00.124758", "DOGE/BTC", OrderBookType::ask});
-
-    std::cout << "The price is " << orderBook[0].price << std::endl;
+void MerkelMain::LoadOrderBook() {
+    orderBook = CSVReader::readCSV("data/book_data.csv");
 }
 
 /** print MerkelMain::out the options the user can choose from */
-void MerkelMain::printMenu()
-{
+void MerkelMain::printMenu() {
     // 1 print MerkelMain::help
     std::cout << "1: help" << std::endl;
     // 2 print MerkelMain::exhange stats
@@ -48,35 +42,38 @@ void MerkelMain::printMenu()
     std::cout << "==============" << std::endl;
 }
 
-void MerkelMain::printHelp()
-{
+void MerkelMain::printHelp() {
     std::cout << "Its simple you don't need help" << std::endl;
 }
-void MerkelMain::printExchange()
-{
-
+void MerkelMain::printExchange() {
     std::cout << "OrderBook contains: " << orderBook.size() << " entries" << std::endl;
+    unsigned int asks = 0;
+    unsigned int bids = 0;
+    for (OrderBookEntry& e : orderBook) {
+        if (e.orderType == OrderBookType::ask) {
+            asks ++;
+        }
+        if (e.orderType == OrderBookType::bid) {
+            bids ++;
+        }
+    }
+    std::cout << "Asks: " << asks << ", Bids: " << bids << std::endl;
 }
-void MerkelMain::enterOffer()
-{
+void MerkelMain::enterOffer() {
     std::cout << "You chose enter offer" << std::endl;
 }
-void MerkelMain::enterBid()
-{
+void MerkelMain::enterBid() {
     std::cout << "you chose enter bid" << std::endl;
 }
-void MerkelMain::printWallet()
-{
+void MerkelMain::printWallet() {
     std::cout << "youre poor" << std::endl;
 }
-void MerkelMain::goToNextTimeFrame()
-{
+void MerkelMain::goToNextTimeFrame() {
     std::cout << "Going to next time frame in the exchange" << std::endl;
 }
 
 /** Use cin to get the user input to the menu */
-int MerkelMain::getUserOption()
-{
+int MerkelMain::getUserOption() {
     int userOption;
     std::cout << "Type in 1-6" << std::endl;
     std::cin >> userOption;
@@ -85,8 +82,7 @@ int MerkelMain::getUserOption()
 }
 
 /** take in what number the use has inputed and decide what needs to be run from that */
-void MerkelMain::processUserOption(int userOption)
-{
+void MerkelMain::processUserOption(int userOption) {
     if (userOption == 0) // bad input
     {
         std::cout << "Invalid choice. choose 1-6" << std::endl;
