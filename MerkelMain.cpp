@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 #include "MerkelMain.h"
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
@@ -26,13 +27,10 @@ void MerkelMain::printMenu() {
     std::cout << "2: exchange stats" << std::endl;
     // 3 make an offer
     std::cout << "3: Make offer" << std::endl;
-
     // 4 make a bid
     std::cout << "4: Make bid" << std::endl;
-
     // 5 print MerkelMain::wallet
     std::cout << "5: print wallet" << std::endl;
-
     // 6 continue
     std::cout << "6: continue" << std::endl;
     std::cout << "==============" << std::endl;
@@ -53,9 +51,26 @@ void MerkelMain::printExchange() {
     }
 }
 
-void MerkelMain::enterOffer() {
-    std::cout << "You chose enter offer" << std::endl;
+void MerkelMain::enterAsk() {
+    std::cout << "You chose enter offer: product, price, amount, eg. ETH/BTC,200,0.5" << std::endl;
+    std::string input;
+    // This fixes a problem with the get line with how we get user input
+    // in the option menu.
+//    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, input);
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3) {
+        std::cout << "Bad input " << input << std::endl;
+    } else {
+        try {
+            OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],currentTime,tokens[0],OrderBookType::ask);
+        }catch(const std::exception& e) {
+            std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
+        }
+    }
+
 }
+
 void MerkelMain::enterBid() {
     std::cout << "you chose enter bid" << std::endl;
 }
@@ -69,10 +84,16 @@ void MerkelMain::goToNextTimeFrame() {
 
 /** Use cin to get the user input to the menu */
 int MerkelMain::getUserOption() {
-    int userOption;
+    int userOption = 0;
+    std::string stringOption;
     std::cout << "Type in 1-6" << std::endl;
-    std::cin >> userOption;
-    std::cout << "You chose" << userOption << std::endl;
+    std::getline(std::cin, stringOption);
+    try {
+        userOption = std::stoi(stringOption);
+    } catch(const std::exception& e) {
+        std::cout << "Bad input" << std::endl;
+    }
+    std::cout << "You chose " << userOption << std::endl;
     return userOption;
 }
 
@@ -92,7 +113,7 @@ void MerkelMain::processUserOption(int userOption) {
     }
     if (userOption == 3)
     {
-        enterOffer();
+        enterAsk();
     }
     if (userOption == 4)
     {

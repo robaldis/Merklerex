@@ -13,7 +13,7 @@ class MerkelMain {
         void printMenu ();
         void printHelp();
         void printExchange();
-        void enterOffer();
+        void enterAsk();
         void enterBid();
         void printWallet();
         void goToNextTimeFrame();
