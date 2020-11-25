@@ -20,6 +20,12 @@ class OrderBook {
          *  If there is no next time stamp it will wrap around to the start */
         std::string getNextTime(std::string timestamp);
 
+        void insertOrder(OrderBookEntry& obe);
+
+
+        std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
+
+
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowestPrice(std::vector<OrderBookEntry>& orders);
         

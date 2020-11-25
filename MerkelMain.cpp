@@ -54,16 +54,15 @@ void MerkelMain::printExchange() {
 void MerkelMain::enterAsk() {
     std::cout << "You chose enter offer: product, price, amount, eg. ETH/BTC,200,0.5" << std::endl;
     std::string input;
-    // This fixes a problem with the get line with how we get user input
-    // in the option menu.
-//    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(std::cin, input);
     std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+    
     if (tokens.size() != 3) {
         std::cout << "Bad input " << input << std::endl;
     } else {
         try {
             OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],currentTime,tokens[0],OrderBookType::ask);
+            orderBook.insertOrder(obe);
         }catch(const std::exception& e) {
             std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
         }
@@ -79,6 +78,11 @@ void MerkelMain::printWallet() {
 }
 void MerkelMain::goToNextTimeFrame() {
     std::cout << "Going to next time frame in the exchange" << std::endl;
+    std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids("ETH/BTC", currentTime);
+    std::cout << "There was : " << sales.size() << " number of sales" << std::endl;
+    for (const OrderBookEntry& sale : sales) {
+        std::cout << "Sales price: " << sale.price << "Sale amount: " << sale.amount << std::endl;
+    }
     currentTime = orderBook.getNextTime(currentTime);
 }
 
