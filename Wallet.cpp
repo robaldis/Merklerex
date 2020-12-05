@@ -1,5 +1,8 @@
 #include "Wallet.h"
 #include <iostream>
+#include <vector>
+#include "CSVReader.h"
+
 
 Wallet::Wallet() {
 
@@ -23,19 +26,20 @@ void Wallet::insertCurrency(std::string type, double amount) {
 
 }
 
-void Wallet::removeCurrency(std::string type, double amount) {
-    int balance;
+bool Wallet::removeCurrency(std::string type, double amount) {
     if (amount < 0 ) {
-        throw std::exception();
+        return false;
     }
     if (currency.count(type) == 0) {// not there yet {
-        balance = 0;
+        return false;
     }
     else {
-        balance = currency[type];
+        if (containsCurrency(type, amount)) {
+            currency[type] -= amount;
+            return true;
+        }
     }
-    balance -= amount; 
-    currency[type] = balance;
+    return false;
 }
         
         
@@ -59,4 +63,23 @@ std::string Wallet::toString() {
         output += row.first + " : " + std::to_string(row.second) + "\n";
     }
     return output;
+}
+
+
+bool Wallet::canFulfillOrder(OrderBookEntry order) {
+    std::vector<std::string> currs = CSVReader::tokenise(order.product, '/');
+    // ask
+    if (order.orderType == OrderBookType::ask) {
+        double amount = order.amount;
+        std::string curr = currs[0];
+        return containsCurrency(curr, amount);
+    }
+    // bid
+    if (order.orderType == OrderBookType::bid) {
+        double amount = order.amount * order.price;
+        std::string curr = currs[1];
+
+        return containsCurrency(curr, amount);
+    }
+    return false;
 }

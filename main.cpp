@@ -10,9 +10,10 @@
 
 
 int main() {
-    // MerkelMain app{};
-    // app.init();
+    MerkelMain app{};
+    app.init();
     //CSVReader::readCSV("data/book_data.csv");
+    /**
     Wallet wallet;
     wallet.insertCurrency("BTC", 10);
     wallet.insertCurrency("USD", 1000);
@@ -21,7 +22,7 @@ int main() {
     wallet.removeCurrency("BTC", 5);
     std::cout << "Wallet has BTC: " << wallet.containsCurrency("BTC", 0) << std::endl;
     std::cout << wallet.toString() << std::endl;
-
+*/
     return 0;
 }
 

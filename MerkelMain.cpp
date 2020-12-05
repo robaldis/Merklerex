@@ -13,6 +13,7 @@ void MerkelMain::init() {
     int input;
     currentTime = orderBook.getEarliestTime();
     wallet.insertCurrency("BTC", 10.0);
+    wallet.insertCurrency("BTC", 1000);
     while (true) {
                 printMenu();
         input = getUserOption();
@@ -63,7 +64,13 @@ void MerkelMain::enterAsk() {
     } else {
         try {
             OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],currentTime,tokens[0],OrderBookType::ask);
-            orderBook.insertOrder(obe);
+            if (wallet.canFulfillOrder(obe)) {
+                std::cout << "Wallet looks good. " << std::endl;
+                orderBook.insertOrder(obe);
+            }
+            else {
+                std::cout << "not enough money. " << std::endl;
+            }
         }catch(const std::exception& e) {
             std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
         }
@@ -73,10 +80,33 @@ void MerkelMain::enterAsk() {
 
 void MerkelMain::enterBid() {
     std::cout << "you chose enter bid" << std::endl;
+    // input a bid: type1, type 2, amount1, amount2
+    std::cout << "You chose enter offer: product, price, amount, eg. ETH/BTC,200,0.5" << std::endl;
+    std::string input;
+    std::getline(std::cin, input);
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+    
+    if (tokens.size() != 3) {
+        std::cout << "Bad input " << input << std::endl;
+    } else {
+        try {
+            OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],currentTime,tokens[0],OrderBookType::bid);
+            if (wallet.canFulfillOrder(obe)) {
+                std::cout << "Wallet looks good. " << std::endl;
+                orderBook.insertOrder(obe);
+            }
+            else {
+                std::cout << "not enough money. " << std::endl;
+            }
+        }catch(const std::exception& e) {
+            std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
+        }
+    }
+
 }
 void MerkelMain::printWallet() {
     std::cout << "youre poor" << std::endl;
-    wallet.toString();
+    std::cout << wallet.toString() << std::endl;
 }
 void MerkelMain::goToNextTimeFrame() {
     std::cout << "Going to next time frame in the exchange" << std::endl;
