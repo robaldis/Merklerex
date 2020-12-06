@@ -16,6 +16,9 @@ class Wallet{
         std::string toString();
         /** Checks if the wallet has the funds to complete a bid*/
         bool canFulfillOrder(OrderBookEntry order);
+        /** Update the contents of the wallet
+         * assumes the order was made by the owner of the wallet*/
+        void processSale(OrderBookEntry& sale);
 
     private:
         std::map<std::string, double> currency;

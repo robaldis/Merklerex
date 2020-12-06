@@ -2,7 +2,7 @@
 #include <string>
 
 
-enum class OrderBookType{bid, ask,sale, unknown};
+enum class OrderBookType{bid, ask,bidsale, asksale, unknown};
 
 /** Data structure to represent each row in the colum of data */
 class OrderBookEntry {
@@ -11,7 +11,9 @@ class OrderBookEntry {
 			double amount,
 			std::string timestamp,
 			std::string product,
-			OrderBookType orderType);	
+		    OrderBookType orderType,
+            std::string username = "dataset");	
+
         static OrderBookType stringToOrderBookType(std::string s);
 			
         static bool compareByTimestamp(OrderBookEntry& e1, OrderBookEntry& e2) {return e1.timestamp < e2.timestamp;}
@@ -23,6 +25,7 @@ class OrderBookEntry {
 		std::string timestamp;
 		std::string product;
 		OrderBookType orderType;
+        std::string username;
         
 			
 		
