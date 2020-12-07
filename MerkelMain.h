@@ -23,7 +23,7 @@ class MerkelMain {
         /** take in what number the use has inputed and decide what needs to be run from that */
         void processUserOption(int userOption); 
         
-        OrderBook orderBook{"data/book_data.csv"};
+        OrderBook orderBook{"data/test.csv"};
         std::string currentTime;
         Wallet wallet;
 };

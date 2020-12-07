@@ -54,6 +54,26 @@ double OrderBook::getLowestPrice(std::vector<OrderBookEntry>& orders) {
 }
 
 
+/** Calculate the change from last time stamp*/
+double OrderBook::getChange(std::vector<OrderBookEntry>& orders, std::vector<OrderBookEntry>& nextOrders) {
+    double average1;
+    double average2;
+    for (OrderBookEntry& e : orders) {
+        // Work out the average
+        average1 += e.price;
+    }
+    for (OrderBookEntry& e : nextOrders) {
+        // Work out the average
+        average2 += e.price;
+    }
+    average1 = average1/orders.size();
+    average2 = average2/nextOrders.size();
+
+    return average1 - average2; 
+}
+
+
+
 std::string OrderBook::getEarliestTime() {
     return orders[0].timestamp;
 }
@@ -71,6 +91,20 @@ std::string OrderBook::getNextTime(std::string timestamp) {
         next_timestamp = orders[0].timestamp;
     }
     return next_timestamp;
+}
+
+std::string OrderBook::getPreviouseTime(std::string timestamp) {
+    std::string previouse_timestamp = "";
+    for (const OrderBookEntry& e : orders) {
+        if (e.timestamp < timestamp) {
+            previouse_timestamp = e.timestamp;
+            break;
+        }
+    }
+    if (previouse_timestamp == "") {
+        previouse_timestamp = orders[0].timestamp;
+    }
+    return previouse_timestamp;
 }
 
 void OrderBook::insertOrder(OrderBookEntry& order) {

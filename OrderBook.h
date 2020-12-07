@@ -19,6 +19,7 @@ class OrderBook {
         /** Return the next time based on the time stamp given
          *  If there is no next time stamp it will wrap around to the start */
         std::string getNextTime(std::string timestamp);
+        std::string getPreviouseTime(std::string timestamp);
 
         void insertOrder(OrderBookEntry& obe);
 
@@ -28,6 +29,7 @@ class OrderBook {
 
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowestPrice(std::vector<OrderBookEntry>& orders);
+        static double getChange(std::vector<OrderBookEntry>& orders, std::vector<OrderBookEntry>& nextOrders);
         
     private:
         std::vector<OrderBookEntry> orders;
