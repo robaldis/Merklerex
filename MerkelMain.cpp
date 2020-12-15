@@ -26,6 +26,39 @@ void MerkelMain::init(bool bot) {
     }
 }
 
+
+void MerkelMain::makeBid(std::string product, std::string amount, std::string product) {
+        try {
+            OrderBookEntry obe = CSVReader::stringsToOBE(price,amount,currentTime,product,OrderBookType::bid);
+            obe.username="simuser";
+            if (wallet.canFulfillOrder(obe)) {
+                std::cout << "Wallet looks good. " << std::endl;
+                orderBook.insertOrder(obe);
+            }
+            else {
+                std::cout << "not enough money. " << std::endl;
+            }
+        }catch(const std::exception& e) {
+            std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
+        }
+}
+void MerkelMain::makeBid(std::string product, std::string amount, std::string product) {
+        try {
+            OrderBookEntry obe = CSVReader::stringsToOBE(price,amount,currentTime,product,OrderBookType::ask);
+            obe.username="simuser";
+            if (wallet.canFulfillOrder(obe)) {
+                std::cout << "Wallet looks good. " << std::endl;
+                orderBook.insertOrder(obe);
+            }
+            else {
+                std::cout << "not enough money. " << std::endl;
+            }
+        }catch(const std::exception& e) {
+            std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
+        }
+}
+
+
 /** print MerkelMain::out the options the user can choose from */
 void MerkelMain::printMenu() {
     // 1 print MerkelMain::help
@@ -72,19 +105,7 @@ void MerkelMain::enterAsk() {
     if (tokens.size() != 3) {
         std::cout << "Bad input " << input << std::endl;
     } else {
-        try {
-            OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],currentTime,tokens[0],OrderBookType::ask);
-            obe.username="simuser";
-            if (wallet.canFulfillOrder(obe)) {
-                std::cout << "Wallet looks good. " << std::endl;
-                orderBook.insertOrder(obe);
-            }
-            else {
-                std::cout << "not enough money. " << std::endl;
-            }
-        }catch(const std::exception& e) {
-            std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
-        }
+        makeAsk(tokens[1],tokens[2], tokens[0]);
     }
 
 }
@@ -100,20 +121,7 @@ void MerkelMain::enterBid() {
     if (tokens.size() != 3) {
         std::cout << "Bad input " << input << std::endl;
     } else {
-        try {
-            OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],currentTime,tokens[0],OrderBookType::bid);
-            obe.username="simuser";
-            std::cout << obe.username << std::endl;
-            if (wallet.canFulfillOrder(obe)) {
-                std::cout << "Wallet looks good. " << std::endl;
-                orderBook.insertOrder(obe);
-            }
-            else {
-                std::cout << "not enough money. " << std::endl;
-            }
-        }catch(const std::exception& e) {
-            std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
-        }
+        makeBid(tokens[1],tokens[2],tokens[0]);
     }
 
 }

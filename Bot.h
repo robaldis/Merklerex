@@ -11,9 +11,9 @@ class Bot {
 
     private:
         /** Make a bid on the market with the amount*/
-        void makeBid(std::string amount, std::string price, OrderBookType orderType);
+        void makeBid(std::string amount, std::string price, std::string product);
         /** Make an ask on the market with the amount*/
-        void makeAsk(std::string amount, std::string price, OrderBookType orderType);
+        void makeAsk(std::string amount, std::string price, std::string product);
 
         MerkelMain sim;
 };

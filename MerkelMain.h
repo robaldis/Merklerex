@@ -9,6 +9,8 @@ class MerkelMain {
         MerkelMain();
         /** Call this to start up the sim */
         void init(bool bot=false);
+        void makeBid(std::string price, std::string amount, std::string product);
+        void makeAsk(std::string price, std::string amount, std::string product);
     private:
         /** print out the options the user can choose from */
         void printMenu ();
