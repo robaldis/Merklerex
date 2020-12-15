@@ -9,15 +9,20 @@ MerkelMain::MerkelMain()
 {
 }
 
-void MerkelMain::init() {
+void MerkelMain::init(bool bot) {
     int input;
     currentTime = orderBook.getEarliestTime();
     wallet.insertCurrency("BTC", 10.0);
     wallet.insertCurrency("BTC", 1000);
-    while (true) {
-                printMenu();
-        input = getUserOption();
-        processUserOption(input);
+    if (bot) {
+        std::cout << "The simulation is being controlled by a bot" << std::endl;
+    }
+    else {
+        while (true) {
+            printMenu();
+            input = getUserOption();
+            processUserOption(input);
+        }
     }
 }
 

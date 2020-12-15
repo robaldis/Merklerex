@@ -8,7 +8,7 @@ class MerkelMain {
     public:
         MerkelMain();
         /** Call this to start up the sim */
-        void init();
+        void init(bool bot=false);
     private:
         /** print out the options the user can choose from */
         void printMenu ();
