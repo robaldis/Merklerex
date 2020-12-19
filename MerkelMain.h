@@ -20,7 +20,8 @@ class MerkelMain {
         void goToNextTimeFrame();
         /** Use cin to get the user input to the menu */
         int getUserOption() ;
-        /** take in what number the use has inputed and decide what needs to be run from that */
+        /** take in what number the use has inputed and decide what 
+         * needs to be run from that */
         void processUserOption(int userOption); 
         
         OrderBook orderBook{"data/test.csv"};
