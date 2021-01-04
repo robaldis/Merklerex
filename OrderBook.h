@@ -11,7 +11,7 @@ class OrderBook {
         OrderBook(std::string filename);
         /** return vector of all known products in the dataset */
         std::vector<std::string> getKnownProducts();
-        /** returrns vector of Orders according to the sent filters */
+        /** returns vector of Orders according to the sent filters */
         std::vector<OrderBookEntry> getOrders(OrderBookType type, std::string product, std::string timestamp);
 
         /** Returns the earliest time in the order bool */
@@ -30,6 +30,7 @@ class OrderBook {
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowestPrice(std::vector<OrderBookEntry>& orders);
         static double getChange(std::vector<OrderBookEntry>& orders, std::vector<OrderBookEntry>& nextOrders);
+        static double getAverage(std::vector<OrderBookEntry>& orders);
         
     private:
         std::vector<OrderBookEntry> orders;

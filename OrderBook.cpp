@@ -72,7 +72,14 @@ double OrderBook::getChange(std::vector<OrderBookEntry>& orders, std::vector<Ord
     return average1 - average2; 
 }
 
-
+double OrderBook::getAverage(std::vector<OrderBookEntry>& orders) {
+    double average = 0;
+    for (OrderBookEntry& order : orders) {
+        // Work out the average
+        average += order.price;
+    }
+    return average;
+}
 
 std::string OrderBook::getEarliestTime() {
     return orders[0].timestamp;

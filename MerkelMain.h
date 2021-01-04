@@ -11,6 +11,7 @@ class MerkelMain {
         void init(bool bot=false);
         void makeBid(std::string price, std::string amount, std::string product);
         void makeAsk(std::string price, std::string amount, std::string product);
+        std::map<std::string,double> getAllAveragePrice();
     private:
         /** print out the options the user can choose from */
         void printMenu ();

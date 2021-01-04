@@ -27,7 +27,7 @@ void MerkelMain::init(bool bot) {
 }
 
 
-void MerkelMain::makeBid(std::string product, std::string amount, std::string product) {
+void MerkelMain::makeBid(std::string amount, std::string price, std::string product) {
         try {
             OrderBookEntry obe = CSVReader::stringsToOBE(price,amount,currentTime,product,OrderBookType::bid);
             obe.username="simuser";
@@ -42,7 +42,7 @@ void MerkelMain::makeBid(std::string product, std::string amount, std::string pr
             std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
         }
 }
-void MerkelMain::makeBid(std::string product, std::string amount, std::string product) {
+void MerkelMain::makeAsk(std::string amount, std::string price, std::string product) {
         try {
             OrderBookEntry obe = CSVReader::stringsToOBE(price,amount,currentTime,product,OrderBookType::ask);
             obe.username="simuser";
@@ -57,6 +57,23 @@ void MerkelMain::makeBid(std::string product, std::string amount, std::string pr
             std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
         }
 }
+
+std::map<std::string,double> MerkelMain::getAllAveragePrice() {
+    // for each product
+    std::map<std::string, double> allAveragePrices;
+    for(std::string const& p : orderBook.getKnownProducts()) {
+        std::vector<OrderBookEntry> O = orderBook.getOrders(OrderBookType::ask,
+                p, currentTime);
+        std::vector<OrderBookEntry> O2 = orderBook.getOrders(OrderBookType::bid,
+                p, currentTime);
+
+        O.insert(O.end(), O2.begin(), O2.end());
+
+        allAveragePrices[O[0].product] = OrderBook::getAverage(O);
+    }
+    return allAveragePrices;
+}
+
 
 
 /** print MerkelMain::out the options the user can choose from */

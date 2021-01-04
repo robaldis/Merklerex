@@ -2,8 +2,9 @@
 #include "OrderBookEntry.h"
 #include <string>
 #include "MerkelMain.h"
+#include "BotBrain.h"
 
-class Bot {
+class Bot: public BotBrain{
     public:
         Bot();
         /** initialise the bot */
