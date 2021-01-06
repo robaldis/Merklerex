@@ -1,15 +1,30 @@
 #include "BotBrain.h"
+#include <iostream>
 
 
 BotBrain::BotBrain(){
 }
 
-
+void BotBrain::startBrain(std::vector<std::string> products) {
+    // initalise all the value for the bot brian
+    // setup regression vector to all 0 for all the products
+    for (std::string product : products) {
+        std::cout << "Products: " << product << std::endl;
+        regression[product].push_back(0);
+        regression[product].push_back(0);
+    }
+}
 
 // prediction for next time step
 void BotBrain::analysis(std::map<std::string, double> prices) {
     for (const std::pair<std::string, double>& row : prices) {
+        // std::cout << "[BotBrain::analysis] price: " << row.second << std::endl;
         addValueToData(row.first, row.second);
+        for (const std::pair<std::string, double>& price : data) {
+            for (const auto& p : price.second) {
+                std::cout << "[BotBrain::analysis] price: " << std::to_string(p) << std::endl;
+            }
+        }
         linearRegression(row.first);
     }
 }
@@ -29,6 +44,8 @@ void BotBrain::linearRegression(std::string product) {
     }
     regression[product][0]= m - (m_gradiant * lr);
     regression[product][1] = b - (b_gradiant * lr);
+
+    std::cout << "m: " << b_gradiant << "b: " << regression[product][1] << std::endl;
 }
 
 

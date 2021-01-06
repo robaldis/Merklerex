@@ -11,7 +11,9 @@ class MerkelMain {
         void init(bool bot=false);
         void makeBid(std::string price, std::string amount, std::string product);
         void makeAsk(std::string price, std::string amount, std::string product);
+        void goToNextTimeFrame();
         std::map<std::string,double> getAllAveragePrice();
+        std::vector<std::string> getKnownProducts();
     private:
         /** print out the options the user can choose from */
         void printMenu ();
@@ -20,7 +22,7 @@ class MerkelMain {
         void enterAsk();
         void enterBid();
         void printWallet();
-        void goToNextTimeFrame();
+        // void goToNextTimeFrame();
         /** Use cin to get the user input to the menu */
         int getUserOption() ;
         /** take in what number the use has inputed and decide what needs to be run from that */

@@ -58,6 +58,7 @@ void MerkelMain::makeAsk(std::string amount, std::string price, std::string prod
         }
 }
 
+
 std::map<std::string,double> MerkelMain::getAllAveragePrice() {
     // for each product
     std::map<std::string, double> allAveragePrices;
@@ -69,12 +70,15 @@ std::map<std::string,double> MerkelMain::getAllAveragePrice() {
 
         O.insert(O.end(), O2.begin(), O2.end());
 
-        allAveragePrices[O[0].product] = OrderBook::getAverage(O);
+        allAveragePrices[p] = OrderBook::getAverage(O);
     }
     return allAveragePrices;
 }
 
 
+std::vector<std::string> MerkelMain::getKnownProducts() {
+    return orderBook.getKnownProducts();
+}
 
 /** print MerkelMain::out the options the user can choose from */
 void MerkelMain::printMenu() {

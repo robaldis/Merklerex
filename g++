@@ -1,1 +1,1 @@
-n.cpp MerkelMain.cpp CSVReader.cpp OrderBookEntry.cpp OrderBook.cpp Wallet.cpp
+g++ main.cpp MerkelMain.cpp CSVReader.cpp Wallet.cpp OrderBook.cpp OrderBookEntry.cpp Bot.cpp BotBrain.cpp
