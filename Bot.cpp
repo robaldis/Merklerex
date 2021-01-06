@@ -10,6 +10,7 @@ void Bot::init() {
     std::cout << "The Bot has been created and is not controlling the simulation" << std::endl;
     sim.init(true);
     std::vector<std::string> products = sim.getKnownProducts();
+    // init the price log with all the products being used.
     initPriceLog(products);
 
     std::map<std::string, std::vector<OrderBookEntry>> orders = sim.getExchangeData();
@@ -19,12 +20,29 @@ void Bot::init() {
     // printOrders(orders);
 }
 
-void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>> orders) {
-    // Loop through all the products
-    // collecte the average price for that product
-    // put that inside the priceLog var
-    
 
+void Bot::run() {
+    /** Runs the bots traiding */
+    while (true) {
+        // Collect the exchange data
+        std::map<std::string, std::vector<OrderBookEntry>> orders = sim.getExchangeData();
+        // Format that data 
+        formatExchangeData(orders);
+        for (ProductData& product : priceLog) {
+            // Run the linear regression
+            product = linearRegression(product);
+            // make prediction
+            
+            // Action
+
+        }
+        // go to next time frame
+        sim.goToNextTimeFrame();
+    }
+
+}
+
+void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>> orders) {
     for (auto& product : orders) {
         std::string p = product.first;
         std::vector<OrderBookEntry> o = product.second;
@@ -36,15 +54,12 @@ void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>> 
         std::cout << "[FormatExchangeData] average: " << average << std::endl;
 
         // place into our new array
-        for (ProductData log : priceLog) {
+        for (ProductData& log : priceLog) {
             if (log.name == p) {
                 log.priceOverTime.push_back(average);
             }
         }
     }
-
-    //BREAK: Make sure the data is going in corectly
-
 
 }
 
@@ -65,5 +80,10 @@ void Bot::printOrders(std::vector<OrderBookEntry> orders, std::string product) {
 void Bot::printPriceLog() {
     for (ProductData& prod : priceLog) {
         std::cout << "Name: " << prod.name << std::endl;
+        std::cout << "Average price over time: ";
+        for (double& average : prod.priceOverTime) {
+            std::cout << average << ", ";
+        }
+        std::cout << std::endl;
     }
 }
