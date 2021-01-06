@@ -9,12 +9,16 @@ void Bot::init() {
     sim = MerkelMain{};
     sim.init(true);
     startBrain(sim.getKnownProducts());
+
+    analysis(sim.getAllAveragePrice());
+    sim.goToNextTimeFrame();
+    analysis(sim.getAllAveragePrice());
     while(true) {
         // This is the "think" loop
         // takes in: product, avarege price.
-        analysis(sim.getAllAveragePrice());
+        //  analysis(sim.getAllAveragePrice());
         // do analysis()
-        sim.goToNextTimeFrame();
+        // sim.goToNextTimeFrame();
         // execute tasks
     }
 }

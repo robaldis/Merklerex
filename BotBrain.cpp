@@ -20,11 +20,6 @@ void BotBrain::analysis(std::map<std::string, double> prices) {
     for (const std::pair<std::string, double>& row : prices) {
         // std::cout << "[BotBrain::analysis] price: " << row.second << std::endl;
         addValueToData(row.first, row.second);
-        for (const std::pair<std::string, double>& price : data) {
-            for (const auto& p : price.second) {
-                std::cout << "[BotBrain::analysis] price: " << std::to_string(p) << std::endl;
-            }
-        }
         linearRegression(row.first);
     }
 }
