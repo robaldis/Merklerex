@@ -9,16 +9,18 @@ MerkelMain::MerkelMain()
 {
 }
 
-void MerkelMain::init() {
+void MerkelMain::init(bool bot) {
     int input;
     currentTime = orderBook.getEarliestTime();
     wallet.insertCurrency("BTC", 10.0);
     wallet.insertCurrency("BTC", 1000);
-    while (true) {
-                printMenu();
-        input = getUserOption();
-        processUserOption(input);
-    }
+    if (bot=false) {
+        while (true) {
+            printMenu();
+            input = getUserOption();
+            processUserOption(input);
+        }
+    }   
 }
 
 /** print MerkelMain::out the options the user can choose from */
@@ -38,6 +40,54 @@ void MerkelMain::printMenu() {
     std::cout << "==============" << std::endl;
     std::cout << "Current time: " << currentTime << std::endl;
 }
+
+std::vector<OrderBookEntry> MerkelMain::getExchangeData() {
+    /** Dump all the trading infomation for the current time step*/
+    // return every item in the current time stamp
+    std::vector<OrderBookEntry> marketData;
+    for (std::string& product : orderBook.getKnownProducts()) {
+        std::vector<OrderBookEntry> orders = orderBook.getOrders(OrderBookType::ask, product, currentTime);
+        marketData.insert(marketData.end(), orders.begin(), orders.end());
+        orders = orderBook.getOrders(OrderBookType::bid, product, currentTime);
+        marketData.insert(marketData.end(), orders.begin(), orders.end());
+    }
+    return marketData;
+}
+
+
+void MerkelMain::makeAsk(std::string amount, std::string price, std::string product) {
+    try {
+        OrderBookEntry obe = CSVReader::stringsToOBE(price,amount,currentTime,product,OrderBookType::ask);
+        obe.username="simuser";
+        if (wallet.canFulfillOrder(obe)) {
+            std::cout << "Wallet looks good. " << std::endl;
+            orderBook.insertOrder(obe);
+        }
+        else {
+            std::cout << "not enough money. " << std::endl;
+        }
+    }catch(const std::exception& e) {
+        std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
+    }
+}
+
+
+void MerkelMain::makeBid(std::string amount, std::string price, std::string product) {
+    try {
+        OrderBookEntry obe = CSVReader::stringsToOBE(price,amount,currentTime,product,OrderBookType::bid);
+        obe.username="simuser";
+        if (wallet.canFulfillOrder(obe)) {
+            std::cout << "Wallet looks good. " << std::endl;
+            orderBook.insertOrder(obe);
+        }
+        else {
+            std::cout << "not enough money. " << std::endl;
+        }
+    }catch(const std::exception& e) {
+        std::cout << "MerkelMain::enterAsk Bad Input " << std::endl;
+    }
+}
+
 
 void MerkelMain::printHelp() {
     std::cout << "Its simple you don't need help" << std::endl;

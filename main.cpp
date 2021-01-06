@@ -5,13 +5,14 @@
 #include "MerkelMain.h"
 #include "CSVReader.h"
 #include "Wallet.h"
-// TODO: there is a weird bug when you type in "nice" it goes to infinite loop
-
+#include "Bot.h"
 
 
 int main() {
-    MerkelMain app{};
-    app.init();
+    // MerkelMain app{};
+    // app.init();
+    Bot bot{};
+    bot.init();
     //CSVReader::readCSV("data/book_data.csv");
     /**
     Wallet wallet;
