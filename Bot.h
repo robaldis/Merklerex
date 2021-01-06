@@ -8,6 +8,7 @@ class Bot: BotBrain {
     public:
         Bot();
         void init();
+        void printOrders(std::vector<OrderBookEntry> orders);
 
 
     private:
