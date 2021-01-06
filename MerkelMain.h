@@ -9,7 +9,8 @@ class MerkelMain {
         MerkelMain();
         /** Call this to start up the sim */
         void init(bool bot=false);
-        std::vector<OrderBookEntry> getExchangeData();
+        std::map<std::string, std::vector<OrderBookEntry>> getExchangeData();
+        std::vector<std::string> getKnownProducts();
         void makeAsk(std::string amount, std::string price, std::string product);
         void makeBid(std::string amount, std::string price, std::string product);
         void goToNextTimeFrame();

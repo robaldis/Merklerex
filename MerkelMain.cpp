@@ -41,17 +41,28 @@ void MerkelMain::printMenu() {
     std::cout << "Current time: " << currentTime << std::endl;
 }
 
-std::vector<OrderBookEntry> MerkelMain::getExchangeData() {
+std::map<std::string, std::vector<OrderBookEntry>> MerkelMain::getExchangeData() {
     /** Dump all the trading infomation for the current time step*/
     // return every item in the current time stamp
-    std::vector<OrderBookEntry> marketData;
+    std::map<std::string, std::vector<OrderBookEntry>> marketData;
     for (std::string& product : orderBook.getKnownProducts()) {
         std::vector<OrderBookEntry> orders = orderBook.getOrders(OrderBookType::ask, product, currentTime);
-        marketData.insert(marketData.end(), orders.begin(), orders.end());
-        orders = orderBook.getOrders(OrderBookType::bid, product, currentTime);
-        marketData.insert(marketData.end(), orders.begin(), orders.end());
+
+        std::vector<OrderBookEntry> orderBid = orderBook.getOrders(OrderBookType::bid, product, currentTime);
+        orders.insert(orders.end(), orderBid.begin(), orderBid.end());
+
+
+        // insert into map
+        marketData[product] = orders;
+
     }
     return marketData;
+}
+
+
+std::vector<std::string> MerkelMain::getKnownProducts() {
+    std::cout << "[MerkelMain::getKnownProducts] products: " << orderBook.getKnownProducts().size() << std::endl;
+    return orderBook.getKnownProducts();
 }
 
 
