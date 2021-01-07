@@ -15,6 +15,26 @@ void Bot::init() {
 
     std::map<std::string, std::vector<OrderBookEntry>> orders = sim.getExchangeData();
     formatExchangeData(orders);
+    for (ProductData& product : priceLog) {
+        sim.printExchange();
+        product = linearRegression(product);
+        std::vector<std::string> sale = prediction(product);
+        processSale(sale);
+        sim.printExchange();
+    }
+
+    sim.goToNextTimeFrame();
+
+
+    orders = sim.getExchangeData();
+    formatExchangeData(orders);
+    for (ProductData& product : priceLog) {
+        sim.printExchange();
+        product = linearRegression(product);
+        std::vector<std::string> sale = prediction(product);
+        processSale(sale);
+        sim.printExchange();
+    }
     // printOrders(orders);
     // sim.goToNextTimeFrame();
     // printOrders(orders);
@@ -40,6 +60,26 @@ void Bot::run() {
         sim.goToNextTimeFrame();
     }
 
+}
+
+
+void Bot::processSale(std::vector<std::string>& s){
+    std::cout << "[ProcessSale] type: " << s[0] << std::endl;
+    if (s[0] != "none") {
+        std::string product = s[3];
+        std::string amount = s[1];
+        std::string price = s[2];
+        std::cout << "type: " << s[0] << std::endl;
+
+        if(s[0] == "bid") {
+            std::cout << "[processSale] Making Bid" << std::endl;
+            sim.makeBid(amount,price,product);
+
+        } else if (s[0] == "ask") {
+            std::cout << "[processSale] Making Ask" << std::endl;
+            sim.makeAsk(amount,price,product);
+        }
+    }
 }
 
 void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>> orders) {

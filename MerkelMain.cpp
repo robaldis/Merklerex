@@ -108,10 +108,13 @@ void MerkelMain::printExchange() {
         std::cout << "Product: " << p << std::endl;
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
                 p, currentTime);
+        std::vector<OrderBookEntry> entriesBids = orderBook.getOrders(OrderBookType::bid,
+                p, currentTime);
         
         std::vector<OrderBookEntry> nextEntries = orderBook.getOrders(OrderBookType::ask,
                 p, orderBook.getPreviouseTime(currentTime));
 
+        std::cout << "Bids seen: " << entriesBids.size() << std::endl;
         std::cout << "Asks seen: " << entries.size() << std::endl;
         std::cout << "Max ask: " << OrderBook::getHighPrice(entries) << std::endl;
         std::cout << "Min ask: " << OrderBook::getLowestPrice(entries) << std::endl;

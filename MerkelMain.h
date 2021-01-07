@@ -14,11 +14,11 @@ class MerkelMain {
         void makeAsk(std::string amount, std::string price, std::string product);
         void makeBid(std::string amount, std::string price, std::string product);
         void goToNextTimeFrame();
+        void printExchange();
     private:
         /** print out the options the user can choose from */
         void printMenu ();
         void printHelp();
-        void printExchange();
         void enterAsk();
         void enterBid();
         void printWallet();
