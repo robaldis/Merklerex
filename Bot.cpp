@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <math.h>
 #include "Bot.h"
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
@@ -33,8 +34,12 @@ void Bot::run() {
             // Action
             processSale(sale);
         }
-        // go to next time frame
-        sim.goToNextTimeFrame();
+        std::string input;
+        std::cin >> input;
+        if (input == "y") {
+            // go to next time frame
+            sim.goToNextTimeFrame();
+        }
     }
 
 }
@@ -64,8 +69,15 @@ void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>&
         std::string p = product.first;
         std::vector<OrderBookEntry> o = product.second;
         double average = 0;
+        std::vector<double> priceData;
         for (OrderBookEntry orderEntry : o) {
-            average += orderEntry.price;
+            if (std::isnan(orderEntry.price)) {
+                    // this is nan
+                std::cout << orderEntry.price << std::endl; 
+            } else {
+                average += orderEntry.price;
+                //priceData.push_back(orderEntry.price);
+            }
         }
         average = average / o.size();
         std::cout << "[FormatExchangeData] average: " << average << std::endl;
@@ -99,7 +111,7 @@ void Bot::printPriceLog() {
         std::cout << "Name: " << prod.name << std::endl;
         std::cout << "Average price over time: ";
         for (double& average : prod.priceOverTime) {
-            std::cout << average << ", ";
+            // std::cout << average << ", ";
         }
         std::cout << std::endl;
     }
