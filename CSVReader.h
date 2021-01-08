@@ -16,6 +16,8 @@ class CSVReader {
                 OrderBookType orderType);
 
 
+        /** convert a obe to a string */
+        static std::string tokensToString(OrderBookEntry order);
 
     private:
         static OrderBookEntry stringsToOBE(std::vector<std::string> strings);

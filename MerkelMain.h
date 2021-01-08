@@ -3,6 +3,7 @@
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
 #include "Wallet.h"
+#include "Log.h"
 
 class MerkelMain {
     public:
@@ -27,8 +28,10 @@ class MerkelMain {
         /** take in what number the use has inputed and decide what 
          * needs to be run from that */
         void processUserOption(int userOption); 
+        std::string startTime;
         
-        OrderBook orderBook{"data/test.csv"};
+        OrderBook orderBook{"data/book_data.csv"};
         std::string currentTime;
         Wallet wallet;
+        Log log;
 };

@@ -14,7 +14,7 @@ class Bot: BotBrain {
 
     private:
         /** Format the exchange data so that it can be easily analysed */
-        void formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>> orders);
+        void formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>& orders);
         void processSale(std::vector<std::string>& sale);
         void initPriceLog(std::vector<std::string> products);
 

@@ -114,3 +114,17 @@ OrderBookEntry CSVReader::stringsToOBE(std::string priceString,
         orderType};
     return obe;
 }
+
+
+
+
+std::string CSVReader::tokensToString(OrderBookEntry order) {
+    std::string line;
+    line += order.timestamp;
+    line += "," + order.product;
+    line += "," + std::to_string(order.price);
+    line += "," + std::to_string(order.amount);
+    return line;
+
+}
+

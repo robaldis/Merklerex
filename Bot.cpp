@@ -12,32 +12,6 @@ void Bot::init() {
     std::vector<std::string> products = sim.getKnownProducts();
     // init the price log with all the products being used.
     initPriceLog(products);
-
-    std::map<std::string, std::vector<OrderBookEntry>> orders = sim.getExchangeData();
-    formatExchangeData(orders);
-    for (ProductData& product : priceLog) {
-        sim.printExchange();
-        product = linearRegression(product);
-        std::vector<std::string> sale = prediction(product);
-        processSale(sale);
-        sim.printExchange();
-    }
-
-    sim.goToNextTimeFrame();
-
-
-    orders = sim.getExchangeData();
-    formatExchangeData(orders);
-    for (ProductData& product : priceLog) {
-        sim.printExchange();
-        product = linearRegression(product);
-        std::vector<std::string> sale = prediction(product);
-        processSale(sale);
-        sim.printExchange();
-    }
-    // printOrders(orders);
-    // sim.goToNextTimeFrame();
-    // printOrders(orders);
 }
 
 
@@ -46,15 +20,18 @@ void Bot::run() {
     while (true) {
         // Collect the exchange data
         std::map<std::string, std::vector<OrderBookEntry>> orders = sim.getExchangeData();
+        std::cout << "[run] length of orders: " << orders.size() << std::endl;
         // Format that data 
         formatExchangeData(orders);
         for (ProductData& product : priceLog) {
             // Run the linear regression
             product = linearRegression(product);
             // make prediction
-            
+            product = linearRegression(product);
+            std::vector<std::string> sale = prediction(product);
+            // sim.printExchange();
             // Action
-
+            processSale(sale);
         }
         // go to next time frame
         sim.goToNextTimeFrame();
@@ -82,8 +59,8 @@ void Bot::processSale(std::vector<std::string>& s){
     }
 }
 
-void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>> orders) {
-    for (auto& product : orders) {
+void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>& orders) {
+    for (const std::pair<std::string, std::vector<OrderBookEntry>>& product : orders) {
         std::string p = product.first;
         std::vector<OrderBookEntry> o = product.second;
         double average = 0;

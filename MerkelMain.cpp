@@ -11,7 +11,9 @@ MerkelMain::MerkelMain()
 
 void MerkelMain::init(bool bot) {
     int input;
+    Log log = Log{};
     currentTime = orderBook.getEarliestTime();
+    startTime = currentTime;
     wallet.insertCurrency("BTC", 10.0);
     wallet.insertCurrency("BTC", 1000);
     if (bot=false) {
@@ -73,6 +75,7 @@ void MerkelMain::makeAsk(std::string amount, std::string price, std::string prod
         if (wallet.canFulfillOrder(obe)) {
             std::cout << "Wallet looks good. " << std::endl;
             orderBook.insertOrder(obe);
+            log.addEntry(obe);
         }
         else {
             std::cout << "not enough money. " << std::endl;
@@ -90,6 +93,7 @@ void MerkelMain::makeBid(std::string amount, std::string price, std::string prod
         if (wallet.canFulfillOrder(obe)) {
             std::cout << "Wallet looks good. " << std::endl;
             orderBook.insertOrder(obe);
+            log.addEntry(obe);
         }
         else {
             std::cout << "not enough money. " << std::endl;
@@ -105,7 +109,7 @@ void MerkelMain::printHelp() {
 }
 void MerkelMain::printExchange() {
     for(std::string const& p : orderBook.getKnownProducts()) {
-        std::cout << "Product: " << p << std::endl;
+        std::cout << "[printExchange] Product: " << p << std::endl;
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
                 p, currentTime);
         std::vector<OrderBookEntry> entriesBids = orderBook.getOrders(OrderBookType::bid,
@@ -113,6 +117,7 @@ void MerkelMain::printExchange() {
         
         std::vector<OrderBookEntry> nextEntries = orderBook.getOrders(OrderBookType::ask,
                 p, orderBook.getPreviouseTime(currentTime));
+        std::cout << "[printeExchange] currentTime: " << currentTime << std::endl;
 
         std::cout << "Bids seen: " << entriesBids.size() << std::endl;
         std::cout << "Asks seen: " << entries.size() << std::endl;
@@ -181,6 +186,7 @@ void MerkelMain::printWallet() {
     std::cout << wallet.toString() << std::endl;
 }
 void MerkelMain::goToNextTimeFrame() {
+    //TODO: make sure it matches every product
     std::cout << "Going to next time frame in the exchange" << std::endl;
     std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids("ETH/BTC", currentTime);
     std::cout << "There was : " << sales.size() << " number of sales" << std::endl;
@@ -191,6 +197,9 @@ void MerkelMain::goToNextTimeFrame() {
         }
     }
     currentTime = orderBook.getNextTime(currentTime);
+    if (currentTime == startTime) {
+        log.saveToFile();
+    }
 }
 
 /** Use cin to get the user input to the menu */

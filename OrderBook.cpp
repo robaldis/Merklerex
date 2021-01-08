@@ -25,6 +25,7 @@ std::vector<std::string> OrderBook::getKnownProducts() {
 
 std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string product, std::string timestamp) {
     std::vector<OrderBookEntry> orders_sub;
+    std::cout << "[getOrders] time: " << timestamp << " proudct: " << product << std::endl;
     for (OrderBookEntry& e : orders) {
         if (e.orderType == type && 
                 e.product == product && 
@@ -37,6 +38,7 @@ std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string
 
 
 double OrderBook::getHighPrice(std::vector<OrderBookEntry>& orders) {
+    std::cout << "[getHighPrice] number of orders: " << orders.size() << std::endl;
     double max = orders[0].price;
     for (OrderBookEntry& e : orders) {
         if (e.price > max) max = e.price;

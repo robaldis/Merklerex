@@ -30,7 +30,8 @@ ProductData BotBrain::linearRegression(ProductData product) {
 
 std::vector<std::string> BotBrain::prediction(ProductData product) {
     std::vector<std::string> sale;
-    if (product.m > variance && product.m < -variance) {
+    std::cout << "[predictio] m: " << (10 > variance || 10 < -variance) << std::endl;
+    if (product.m > variance || product.m < -variance) {
         // is it a big enough gradient to be worth it?
         // The next two if statements define if it will be a bid or ask
         if (product.m > 0) {

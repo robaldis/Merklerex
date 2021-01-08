@@ -13,6 +13,7 @@ int main() {
     // app.init();
     Bot bot{};
     bot.init();
+    bot.run();
     //CSVReader::readCSV("data/book_data.csv");
     /**
     Wallet wallet;
