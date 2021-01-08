@@ -197,9 +197,7 @@ void MerkelMain::goToNextTimeFrame() {
         }
     }
     currentTime = orderBook.getNextTime(currentTime);
-    if (currentTime == startTime) {
-        log.saveToFile();
-    }
+    log.saveToFile();
 }
 
 /** Use cin to get the user input to the menu */

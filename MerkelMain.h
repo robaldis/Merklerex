@@ -34,4 +34,5 @@ class MerkelMain {
         std::string currentTime;
         Wallet wallet;
         Log log;
+        int count = 0;
 };

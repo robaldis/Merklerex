@@ -123,7 +123,7 @@ std::string CSVReader::tokensToString(OrderBookEntry order) {
     line += order.timestamp;
     line += "," + order.product;
     line += "," + std::to_string(order.price);
-    line += "," + std::to_string(order.amount);
+    line += "," + std::to_string(order.amount) + "\n";
     return line;
 
 }
