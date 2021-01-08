@@ -72,7 +72,6 @@ void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>&
         std::vector<double> priceData;
         for (OrderBookEntry orderEntry : o) {
             if (std::isnan(orderEntry.price)) {
-                    // this is nan
                 std::cout << orderEntry.price << std::endl; 
             } else {
                 average += orderEntry.price;
