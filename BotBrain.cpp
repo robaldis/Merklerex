@@ -32,19 +32,13 @@ ProductData BotBrain::linearRegression(ProductData product) {
     return product;
     */
 
-    // Least suares law
-    // TODO: get the average of x and y
-    // TODO: m = (sun(x-xa)(y-ya))/(sum(x-xa)^2)
-
-
-
+    // Least squares law
     double yAverage = 0;
     double xAverage = 0;
     int N = product.priceOverTime.size();
 
     if (N == 1) {
         return product;
-
     }
 
 
@@ -57,23 +51,17 @@ ProductData BotBrain::linearRegression(ProductData product) {
     xAverage = xAverage/N;
 
 
-
-
     double num = 0;
     double din = 0;
     for (int x=0; x < N; ++x) {
-       num += (product.priceOverTime[x]-yAverage)* ((x+1)-xAverage);
-    }
-    for (int x=0; x < N; ++x) {
-       din += pow(((x+1)-xAverage), 2);   
+       num += (product.priceOverTime[x]-yAverage) * ((x+1)-xAverage);
+       din += pow(((x+1)-yAverage), 2);   
     }
 
-    // NOTE: this is a divide by 0 thing
-    num = std::round((num * 100) + .5) / 100;
-    din = std::round((din * 100) + .5) / 100;
     product.m = num/din;
     product.b = yAverage-product.m*xAverage;
     
+    std::cout << "m: " << product.m << " b: " << product.b << std::endl;
     return product;
 
 }
@@ -82,6 +70,7 @@ ProductData BotBrain::linearRegression(ProductData product) {
 
 std::vector<std::string> BotBrain::prediction(ProductData product) {
     std::vector<std::string> sale;
+    std::cout << "[prediction] the if thing: " <<  (product.m > variance)<< std::endl;
     if (product.m > variance || product.m < -variance) {
         // is it a big enough gradient to be worth it?
         // The next two if statements define if it will be a bid or ask
@@ -99,7 +88,6 @@ std::vector<std::string> BotBrain::prediction(ProductData product) {
         return sale;
     }
     double salePrice = product.m*product.priceOverTime.size() + product.b;
-    salePrice = std::round((salePrice * 100) + .5) / 100;
 
     std::cout << "salePrice: " << salePrice << std::endl;
     std::cout << "[prediction] m: " << product.m << " b: " << product.b << std::endl;

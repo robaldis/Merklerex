@@ -68,6 +68,10 @@ void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>&
     for (const std::pair<std::string, std::vector<OrderBookEntry>>& product : orders) {
         std::string p = product.first;
         std::vector<OrderBookEntry> o = product.second;
+        if ( o.size() == 0) {
+            // Do nothing
+            break;
+        }
         double average = 0;
         std::vector<double> priceData;
         for (OrderBookEntry orderEntry : o) {
@@ -79,6 +83,7 @@ void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>&
             }
         }
         average = average / o.size();
+        std::cout << "[FormatExchagneData] o.size(): " << o.size() << std::endl;
         std::cout << "[FormatExchangeData] average: " << average << std::endl;
 
         // place into our new array

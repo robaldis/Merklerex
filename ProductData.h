@@ -9,7 +9,7 @@ class ProductData {
 
         std::string name;
         std::vector<double> priceOverTime;
-        double m;
-        double b;
+        double m=0;
+        double b=0;
 
 };
