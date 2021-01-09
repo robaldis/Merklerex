@@ -26,4 +26,7 @@ class Bot: BotBrain {
         void printOrders(std::vector<OrderBookEntry> orders, std::string product);
         void printPriceLog();
 
+        bool runBot = true;
+        std::string startTime;
+
 };

@@ -16,6 +16,7 @@ class MerkelMain {
         void makeBid(std::string amount, std::string price, std::string product);
         void goToNextTimeFrame();
         void printExchange();
+        std::string getCurrentTime();
     private:
         /** print out the options the user can choose from */
         void printMenu ();
@@ -34,5 +35,4 @@ class MerkelMain {
         std::string currentTime;
         Wallet wallet;
         Log log;
-        int count = 0;
 };

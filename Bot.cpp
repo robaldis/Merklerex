@@ -13,12 +13,13 @@ void Bot::init() {
     std::vector<std::string> products = sim.getKnownProducts();
     // init the price log with all the products being used.
     initPriceLog(products);
+    startTime = sim.getCurrentTime();
 }
 
 
 void Bot::run() {
     /** Runs the bots traiding */
-    while (true) {
+    while (runBot) {
         // Collect the exchange data
         std::map<std::string, std::vector<OrderBookEntry>> orders = sim.getExchangeData();
         std::cout << "[run] length of orders: " << orders.size() << std::endl;
@@ -34,11 +35,10 @@ void Bot::run() {
             // Action
             processSale(sale);
         }
-        std::string input;
-        std::cin >> input;
-        if (input == "y") {
-            // go to next time frame
-            sim.goToNextTimeFrame();
+        // go to next time frame
+        sim.goToNextTimeFrame();
+        if (startTime == sim.getCurrentTime()) {
+            runBot = false;
         }
     }
 

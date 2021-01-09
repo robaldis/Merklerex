@@ -12,6 +12,6 @@ class BotBrain {
 
     private:
         double lr = 1.0;
-        double variance = 0.0000005;
+        double variance = 0.00000005;
 
 };

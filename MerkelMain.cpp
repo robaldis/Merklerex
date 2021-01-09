@@ -14,8 +14,13 @@ void MerkelMain::init(bool bot) {
     Log log = Log{};
     currentTime = orderBook.getEarliestTime();
     startTime = currentTime;
-    wallet.insertCurrency("BTC", 10.0);
     wallet.insertCurrency("BTC", 1000);
+    wallet.insertCurrency("ETH", 1000);
+    wallet.insertCurrency("DOGE", 1000);
+    wallet.insertCurrency("USDT", 1000);
+
+    log.addBalance(wallet.toString());
+
     if (bot=false) {
         while (true) {
             printMenu();
@@ -103,6 +108,11 @@ void MerkelMain::makeBid(std::string amount, std::string price, std::string prod
     }
 }
 
+std::string MerkelMain::getCurrentTime() {
+    return currentTime;
+}
+
+
 
 void MerkelMain::printHelp() {
     std::cout << "Its simple you don't need help" << std::endl;
@@ -188,15 +198,18 @@ void MerkelMain::printWallet() {
 void MerkelMain::goToNextTimeFrame() {
     //TODO: make sure it matches every product
     std::cout << "Going to next time frame in the exchange" << std::endl;
-    std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids("ETH/BTC", currentTime);
-    std::cout << "There was : " << sales.size() << " number of sales" << std::endl;
-    for (OrderBookEntry& sale : sales) {
-        std::cout << "Sales price: " << sale.price << "Sale amount: " << sale.amount <<"\t" << sale.username << std::endl;
-        if (sale.username == "simuser") {
-            wallet.processSale(sale);
+    for (std::string& product : orderBook.getKnownProducts()) {
+        std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids(product, currentTime);
+        std::cout << "There was : " << sales.size() << " number of sales" << std::endl;
+        for (OrderBookEntry& sale : sales) {
+            std::cout << "Sales price: " << sale.price << "Sale amount: " << sale.amount <<"\t" << sale.username << std::endl;
+            if (sale.username == "simuser") {
+                wallet.processSale(sale);
+            }
         }
     }
     currentTime = orderBook.getNextTime(currentTime);
+    log.addBalance(wallet.toString());
     log.saveToFile();
 }
 

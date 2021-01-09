@@ -14,9 +14,10 @@ class Log {
         /** Add an entry to the log file*/
         void addEntry(OrderBookEntry order);
 
+        void addBalance(std::string wallet);
 
     private:
-        std::vector<OrderBookEntry> logData;
+        std::vector<std::string> logData;
         
 
 };
