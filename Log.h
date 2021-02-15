@@ -13,7 +13,7 @@ class Log {
         void saveToFile();
         /** Add an entry to the log file*/
         void addEntry(OrderBookEntry order);
-
+        /** Adds the balance to the log file */
         void addBalance(std::string wallet);
 
     private:

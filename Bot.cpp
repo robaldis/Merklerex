@@ -83,8 +83,6 @@ void Bot::formatExchangeData(std::map<std::string, std::vector<OrderBookEntry>>&
             }
         }
         average = average / o.size();
-        std::cout << "[FormatExchagneData] o.size(): " << o.size() << std::endl;
-        std::cout << "[FormatExchangeData] average: " << average << std::endl;
 
         // place into our new array
         for (ProductData& log : priceLog) {

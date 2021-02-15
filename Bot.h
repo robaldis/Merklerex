@@ -8,7 +8,9 @@
 class Bot: BotBrain {
     public:
         Bot();
+        /** initialise all the bot ready to run the symulation */
         void init();
+        /** Execute the bot to run throught the simulation */
         void run();
 
 
